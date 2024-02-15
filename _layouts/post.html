@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | {{ site.title }}</title>
+    {%- assign summary = page.description | default: site.description | escape %}
+    <meta name="description" content="{{ summary }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ site.title }}">
+    {%- assign card = page.card_title | default: page.title | escape %}
+    <meta property="og:title" content="{{ card }}">
+    <meta property="og:description" content="{{ summary }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta name="twitter:card" content="{% if page.image %}summary_large_image{% else %}summary{% endif %}">
+    <meta name="twitter:title" content="{{ card }}">
+    <meta name="twitter:description" content="{{ summary }}">
+    {%- if page.image %}
+    <meta property="og:image" content="{{ page.image | absolute_url }}">
+    <meta name="twitter:image" content="{{ page.image | absolute_url }}">
+    {%- endif %}
+    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
+    {% include theme.html %}
+    <link rel="stylesheet" href="{{ '/assets/css/papermod.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/post.css' | relative_url }}">
+    {% include analytics.html %}
+  </head>
+
+  <body id="top">
+    {% include masthead.html %}
+
+    {% assign words = content | strip_html | number_of_words %}
+    {% assign minutes = words | plus: 212 | divided_by: 213 %}
+    {% assign parts = content | split: '<!-- toc -->' %}
+    <main class="main">
+      <article class="post-single">
+        <header class="post-header">
+          <h1 class="post-title">{{ page.title }}<a hidden class="anchor" aria-hidden="true" href="{{ page.url | relative_url }}">#</a></h1>
+          <div class="post-meta"><span>{{ page.date | date: "%B %-d, %Y" }}</span> | <span>{{ minutes }} min</span> | <span>{{ site.author.name }}</span></div>
+        </header>
+        {% if parts.size > 1 %}{{ parts[0] }}{% endif %}
+        <div class="post-content md-content">{{ parts | last }}</div>
+        <footer class="post-footer">
+          {% if page.tags.size > 0 %}<ul class="post-tags">{% for tag in page.tags %}<li><a>{{ tag }}</a></li>{% endfor %}</ul>{% endif %}
+          {% include share_icons.html %}
+        </footer>
+      </article>
+    </main>
+
+    {% include scripts.html %}
+    <script>
+      // in-page links use the browser's scrolling, so scroll-margin-top keeps targets below the masthead
+      $(function () { $('.post-single a').off('click.smoothscroll'); });
+
+      // heading anchors, in PaperMod's markup
+      document.querySelectorAll('.post-content :is(h1, h2, h3, h4, h5, h6)[id]').forEach(function (h) {
+        var a = document.createElement('a');
+        a.className = 'anchor';
+        a.hidden = true;
+        a.setAttribute('aria-hidden', 'true');
+        a.href = '#' + h.id;
+        a.textContent = '#';
+        h.appendChild(a);
+      });
+    </script>
+  </body>
+</html>

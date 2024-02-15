@@ -1,0 +1,182 @@
+---
+---
+
+/* Post pages: the masthead, navigation and typography of the homepage; the layout comes from papermod.css, loaded before this file. */
+
+@import "vendor/breakpoint/breakpoint";
+@import "variables";
+@import "mixins";
+@import "vendor/susy/susy";
+
+@import "animations";
+@import "masthead";
+@import "navigation";
+@import "dark";
+
+/* from _utilities.scss: only what the collapsed navigation needs (the rest, e.g. footnotes, would restyle the post) */
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.navicon {
+  position: relative;
+  width: $navicon-width;
+  height: $navicon-height;
+  background: #fff;
+  margin: auto;
+  transition: 0.3s;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: $navicon-width;
+    height: $navicon-height;
+    background: #fff;
+    transition: 0.3s;
+  }
+
+  &:before {
+    top: (-2 * $navicon-height);
+  }
+
+  &:after {
+    bottom: (-2 * $navicon-height);
+  }
+}
+
+.close .navicon {
+  background: transparent;
+
+  &:before,
+  &:after {
+    transform-origin: 50% 50%;
+    top: 0;
+    width: $navicon-width;
+  }
+
+  &:before {
+    transform: rotate3d(0, 0, 1, 45deg);
+  }
+
+  &:after {
+    transform: rotate3d(0, 0, 1, -45deg);
+  }
+}
+
+/* the theme's .toc styles would otherwise leak into the post's table of contents */
+.post-single .toc {
+  font-family: inherit;
+  color: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  box-shadow: none;
+}
+
+/* kramdown puts no rule above the footnotes; draw the one Hugo adds, in PaperMod's .md-content hr style */
+.md-content .footnotes::before {
+  content: "";
+  display: block;
+  margin: 30px 0;
+  height: 2px;
+  background: var(--tertiary);
+}
+
+/* the homepage's typography (_reset.scss, _base.scss) in place of PaperMod's */
+html {
+  font-size: 15px;
+}
+
+button {
+  margin: 0;
+  font-size: 100%;
+  line-height: normal;
+  vertical-align: middle;
+}
+
+body {
+  color: var(--content);
+  font-family: $global-font-family;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+:root {
+  --primary: #{$text-color};
+  --content: #{$text-color};
+}
+
+.post-title {
+  font-size: 33px;
+}
+
+/* the title links to its own page, with the anchor style of the section headings */
+.post-title:hover .anchor {
+  display: inline-flex;
+  color: var(--secondary);
+  margin-inline-start: .5em;
+  font-weight: 500;
+  user-select: none;
+}
+
+.md-content h1,
+.md-content h2 {
+  font-size: $type-size-3;
+}
+
+.md-content h3 {
+  font-size: $type-size-4;
+}
+
+.md-content h4,
+.md-content h5,
+.md-content h6 {
+  font-size: $type-size-5;
+}
+
+/* the meta line and the tags share one size */
+.post-meta,
+.post-tags a {
+  font-size: 0.8rem;
+}
+
+/* anchor targets land below the sticky masthead */
+.post-content [id] {
+  scroll-margin-top: 5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* tables sit centred and scroll sideways when wider than the column */
+.md-content table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-x: auto;
+}
+
+/* figure captions: the paragraph after an image, marked {: .caption} */
+.md-content .caption {
+  margin-top: -0.5em;
+  text-align: center;
+  color: var(--secondary);
+  font-size: 0.9em;
+}
+
+/* images that stand alone in a paragraph sit centred */
+.md-content p > img:only-child {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* PaperMod lays code out as a grid of Hugo's line spans; Rouge has no line spans, so the code flows as text */
+.md-content pre code {
+  display: block;
+}
