@@ -1,0 +1,62 @@
+/* ==========================================================================
+   DARK MODE: the homepage
+   ========================================================================== */
+
+[data-theme=dark] {
+  background-color: $dark-theme;
+
+  body {
+    background-color: $dark-theme;
+    color: $dark-content;
+  }
+
+  a {
+    color: $dark-link;
+  }
+
+  .page__content h1,
+  .page__content h2 {
+    border-color: $dark-border;
+  }
+
+  .paper-box {
+    border-color: $dark-border;
+  }
+
+  blockquote {
+    border-color: $dark-secondary;
+  }
+
+  .author__avatar img {
+    border-color: $dark-border;
+  }
+
+  .author__urls {
+    background: $dark-entry;
+    border-color: $dark-border;
+
+    &:before {
+      border-color: $dark-border transparent;
+    }
+
+    &:after {
+      border-color: $dark-entry transparent;
+    }
+
+    @include breakpoint($large) {
+      background: transparent;
+    }
+  }
+
+  .author__urls a,
+  .author__urls_sm a {
+    color: inherit;
+  }
+
+  .fa-map-marker,
+  .fa-github,
+  .fa-github-alt,
+  .fa-github-square {
+    color: $dark-content;
+  }
+}
